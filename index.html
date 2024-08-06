@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            #canvas-border {
+                width: 500px;
+                height: 500px;
+                border: 2px solid blue;
+            }
+
+            canvas {
+                margin-top: 20px;
+                position: absolute;
+                top: 0%;
+                left: calc(50% - 250px);
+                display: flex;
+                border: 2px solid green;
+            }
+
+            #button-container {
+                width: 500px;
+                height: 500px;
+                display: flex;
+                margin-top: 20px;
+                position: absolute;
+                top: 2px;
+                left: calc(50% - 248px);
+                background-color: rgba(0,255,0,0.2);
+            }
+
+            button {
+                position: absolute;
+                border: none;
+                background-color: transparent;
+            }
+
+            button:hover {
+                cursor: pointer;
+            }
+        </style>
+
+        <canvas id="button-area" width="500" height="500"></canvas>
+        <div id="button-container"></div>
+
+        <script>
+            const canvas = document.getElementById("button-area");
+            const ctx = canvas.getContext("2d");
+            const pxSize = 50;
+
+            document.addEventListener("click", (event) => {
+                for (const button of document.querySelectorAll("button")) {
+                    if (event.target === button) {
+                        alert("if you're seeing this...");
+                        stopwatch("start");
+                        alert("move in the next 15 seconds and you're gay");
+                        const time = stopwatch("stop");
+                        console.log(time);
+                        if (time < 15) {
+                            alert("UR GAY XDDDD 😱😱😱😱😂😂😂😂😂");
+                            alert("i caught yo ass in HTTPS bro..");
+                        } else {
+                            alert("congrats...");
+                        }
+                        return;
+                    } else {
+                        continue;
+                    }
+                }
+
+                for (const element of document.querySelectorAll("canvas, #button-container, button")) {
+                    if (element.contains(event.target)) {
+                        return;
+                    }
+                }
+                createButtons();
+            });
+
+            function createButtons() {
+                // delete old buttons
+                for (const button of document.querySelectorAll("button")) {
+                    button.remove();
+                }
+
+                // draw squares
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                for (let i=0; i<canvas.height; i+=pxSize) {
+                    for (let j=0; j<canvas.width; j+=pxSize) {
+                        const x = j;
+                        const y = i;
+
+                        if (randomNumber(1, 100) <= 2) {
+                            ctx.fillStyle = "orange";
+                            ctx.fillRect(x, y, pxSize, pxSize);
+
+                            // button creation
+                            const button = document.createElement("button");
+                            Object.assign(button.style, {
+                                left: `${x}px`,
+                                top: `${y}px`,
+                                width: `${pxSize}px`,
+                                height: `${pxSize}px`
+                            });
+                            document.getElementById("button-container").appendChild(button);
+                        }
+                    }
+                }
+            }
+
+            function randomNumber(min, max, interval) {
+                if (interval && !isNaN(interval) && interval <= max) {
+                    return Math.floor((Math.random() * (max-min+1) / interval + min)) * interval;
+                } else {
+                    return Math.floor(Math.random() * (max-min+1) + min);
+                }
+            }
+
+            let startTime;
+            function stopwatch(action) {
+                if (action === "start") {
+                    startTime = new Date().getSeconds();
+                } else if (action === "stop") {
+                    const stopTime = new Date().getSeconds();
+                    return stopTime - startTime;
+                }
+            }
+        </script>
+    </body>
+</html>
